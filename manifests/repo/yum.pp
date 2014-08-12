@@ -18,13 +18,14 @@ class uchiwa::repo::yum {
       }
     }
 
-    yumrepo { 'sensu':
-      enabled  => 1,
-      baseurl  => $url,
-      gpgcheck => 0,
-      name     => 'sensu',
-      descr    => 'sensuapp.org uchiwa repo',
-      before   => Package['uchiwa'],
+    if !defined(Yumrepo['sensu']) {
+      yumrepo { 'sensu':
+        enabled  => 1,
+        baseurl  => $url,
+        gpgcheck => 0,
+        name     => 'sensu',
+        descr    => 'sensuapp.org uchiwa repo',
+      }
     }
   }
 
