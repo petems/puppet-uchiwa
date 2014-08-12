@@ -4,10 +4,12 @@ class uchiwa::install {
   case $::osfamily {
     'Debian': {
       class { 'uchiwa::repo::apt': }
+      $package_require = Apt::Source['sensu']
     }
 
     'RedHat': {
       class { 'uchiwa::repo::yum': }
+      $package_require = Yumrepo['sensu']
     }
 
     default: { alert("${::osfamily} not supported yet") }
@@ -29,7 +31,8 @@ class uchiwa::install {
   }
 
   package { $uchiwa::package_name:
-    ensure => $uchiwa::version,
+    ensure  => $uchiwa::version,
+    require => $package_require,
   }
 
 }
